@@ -3,30 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Отметки Наука 4</title>
+    <title>Отметки {{ team_name }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ url_for('static', filename='curator.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/static/curator.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Наука 4</h1>
-        <form id="checkboxForm">
-            <div class="button-container">
-                <button type="button" id="checkAll" class="btn btn-primary">Отметить всех</button>
-                <button type="button" id="uncheckAll" class="btn btn-secondary">Убрать всех</button>
-            </div>
-            <div class="checkbox-container">
-                {% for i in range(children_count) %}
+<div class="container">
+    <h1>{{ team_name }}</h1>
+    <form id="checkboxForm">
+        <div class="button-container">
+            <button type="button" id="checkAll" class="btn btn-primary">Отметить всех</button>
+            <button type="button" id="uncheckAll" class="btn btn-secondary">Убрать всех</button>
+        </div>
+        <div class="checkbox-container">
+            {% for i in range(children_count) %}
                 <div class="checkbox-item">
                     <input type="checkbox" id="checkbox{{ i }}" name="checkbox{{ i }}"
                            {% if states.get('checkbox' ~ i, False) %}checked{% endif %}>
                     <label for="checkbox{{ i }}">{{ children[i] }}</label>
                 </div>
-                {% endfor %}
-            </div>
-        </form>
+            {% endfor %}
+        </div>
+    </form>
+    <div class="footer">
+        <button type="button" id="checkAll" class="btn" onclick="document.location.replace('/create_team')">Добавить команду</button>
+        <button type="button" id="checkAll" class="btn" onclick="document.location.replace('/edit_team/{{ team_name }}')">Изменить команду</button>
+        <button type="button" id="checkAll" class="btn">Добавить куратора</button>
     </div>
+</div>
 </body>
 </html>

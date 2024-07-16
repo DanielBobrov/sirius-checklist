@@ -1,15 +1,27 @@
+function getTeamName() {
+    // Получаем полный URL
+    const fullURL = document.URL;
+
+    // Разбиваем URL на части по символу "/"
+    const parts = fullURL.split('/');
+
+    // Возвращаем последний элемент массива
+    return parts[parts.length - 1];
+}
+
 $(document).ready(function () {
     function toggleCheckbox(checkbox) {
         checkbox.prop('checked', !checkbox.prop('checked'));
         saveCheckboxState(checkbox);
     }
+    let team_name = getTeamName();
 
     function saveCheckboxState(checkbox) {
         var checkboxId = checkbox.attr('id');
         var isChecked = checkbox.prop('checked');
 
         $.ajax({
-            url: '/save_state',
+            url: '/save_state/' + team_name,
             method: 'POST',
             data: JSON.stringify({
                 id: checkboxId,
@@ -46,7 +58,7 @@ $(document).ready(function () {
         });
 
         $.ajax({
-            url: '/save_all_states',
+            url: '/save_all_states/' + team_name,
             method: 'POST',
             data: JSON.stringify(checkboxStates),
             contentType: 'application/json',
