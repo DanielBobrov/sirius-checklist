@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Отметки Наука 4</title>
+    <title>Отметки {{ team_name }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ url_for('static', filename='child.js') }}"></script>
+    <script src="/static/child.jsW"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Наука 4</h1>
+        <h1>{{ team_name }}</h1>
         <form id="checkboxForm">
             <div class="checkbox-container">
                 {% for i in range(children_count) %}
