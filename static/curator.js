@@ -9,11 +9,56 @@ function getTeamName() {
     return parts[parts.length - 1];
 }
 
+function addCurator() {
+    $.ajax({
+        url: '/add_curator',
+        method: 'GET',
+        success: function (response) {
+            navigator.clipboard.writeText(response);
+        },
+        error: function (xhr, status, error) {
+            alert("Ошибка :(");
+        }
+    });
+}
+
+function addChild(team_name) {
+    $.ajax({
+        url: '/add_child/'+team_name,
+        method: 'GET',
+        success: function (response) {
+            navigator.clipboard.writeText(response);
+        },
+        error: function (xhr, status, error) {
+            alert("Ошибка :(");
+        }
+    });
+}
+
+function delete_team(team_name) {
+    if (confirm('Точно хотите удалить команду ' + team_name + '?')) {
+        $.ajax({
+            url: '/delete_team/' + team_name,
+            method: 'GET',
+            success: function (response) {
+                location.href = "/";
+            },
+            error: function (xhr, status, error) {
+                alert("Ошибка :(");
+            }
+        });
+    } else {
+        // Do nothing!
+        console.log('Thing was not saved to the database.');
+    }
+}
+
 $(document).ready(function () {
     function toggleCheckbox(checkbox) {
         checkbox.prop('checked', !checkbox.prop('checked'));
         saveCheckboxState(checkbox);
     }
+
     let team_name = getTeamName();
 
     function saveCheckboxState(checkbox) {

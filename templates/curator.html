@@ -30,7 +30,9 @@
     <div class="footer">
         <button type="button" id="checkAll" class="btn" onclick="document.location.replace('/create_team')">Добавить команду</button>
         <button type="button" id="checkAll" class="btn" onclick="document.location.replace('/edit_team/{{ team_name }}')">Изменить команду</button>
-        <button type="button" id="checkAll" class="btn">Добавить куратора</button>
+        <button type="button" id="checkAll" class="btn" onclick="delete_team('{{ team_name }}')">Удалить команду</button>
+        <button type="button" id="checkAll" class="btn" onclick="addCurator()">Добавить куратора</button>
+        <button type="button" id="checkAll" class="btn" onclick="addChild('{{ team_name }}')">Добавить ребенка</button>
     </div>
 </div>
 </body>

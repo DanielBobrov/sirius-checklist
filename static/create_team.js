@@ -32,7 +32,7 @@ $(document).ready(function () {
             contentType: 'application/json',
             success: function (response) {
                 console.log('State saved successfully');
-                window.location.replace('/curator/' + team_name);
+                location.href = '/' + team_name;
             },
             error: function (response) {
                 console.error('Response:', response);
