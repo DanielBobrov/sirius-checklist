@@ -13,6 +13,8 @@ app.secret_key = "SECRET KEY"
 app.permanent_session_lifetime = datetime.timedelta(days=30)
 curator_invites = set()
 child_invites = dict()
+with open(".config", "r") as f:
+    universal_curator_invite = f.read().rstrip()
 
 
 def load_states(team_name):
@@ -103,12 +105,9 @@ def edit_team_request(team_name):
 
 @app.get('/delete_team/<string:team_name>')
 def delete_team_request(team_name):
-    print("ok")
     if session.get("role", None) != "curator":
         return unauthorized()
-    print("ok")
     if delete_team(team_name):
-        print("ok")
         return redirect(f"/")
     else:
         return make_response("501")
@@ -149,22 +148,9 @@ def get_update(team_name):
             </div>""").render(states=states, children_count=len(children), children=children)
 
 
-# @app.route('/curator')
-# def curator_empty():
-#     return render_template("curator_empty.html", teams=get_teams_list())
-#
-#
-# @app.route('/curator/<string:team_name>')
-# def curator(team_name):
-#     states = load_states(team_name)
-#     children = load_children(team_name)
-#     return render_template('curator.html', states=states, children_count=len(children), children=children,
-#                            team_name=team_name)
-
-
 @app.route("/add_curator")
 def add_curator():
-    if len(curator_invites) == 0:
+    if len(curator_invites) == 1:
         curator_invites.add(''.join(random.choice(string.ascii_lowercase) for i in range(20)))
     return make_response([i for i in curator_invites][0])
 
@@ -228,6 +214,13 @@ def multi_team(team_name):
         curator_invites.remove(team_name)
         app.permanent_session_lifetime = datetime.timedelta(days=30)
         return redirect(f"/")
+    elif team_name == universal_curator_invite:
+        app.permanent_session_lifetime = datetime.timedelta(days=365)
+        session.permanent = True
+        session["role"] = "curator"
+        curator_invites.remove(team_name)
+        app.permanent_session_lifetime = datetime.timedelta(days=30)
+        return redirect(f"/")
     elif team_name in child_invites.values():
         session.permanent = True
         session["role"] = "child"
@@ -248,9 +241,18 @@ def multi_team(team_name):
 
 @app.route('/')
 def main():
-    if not is_curator():
+    role = session.get("role", None)
+    if role is None:
         return unauthorized()
-    return render_template("empty.html", teams=get_teams_list())
+    if role == "child":
+        return redirect(session.get("team_name", "/"))
+    elif role == "curator":
+        return render_template("empty.html", teams=get_teams_list())
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return redirect("/")
 
 
 if __name__ == '__main__':

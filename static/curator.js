@@ -14,7 +14,7 @@ function addCurator() {
         url: '/add_curator',
         method: 'GET',
         success: function (response) {
-            navigator.clipboard.writeText(response);
+            navigator.clipboard.writeText(window.location.origin + "/" + response);
         },
         error: function (xhr, status, error) {
             alert("Ошибка :(");
@@ -24,10 +24,10 @@ function addCurator() {
 
 function addChild(team_name) {
     $.ajax({
-        url: '/add_child/'+team_name,
+        url: '/add_child/' + team_name,
         method: 'GET',
         success: function (response) {
-            navigator.clipboard.writeText(response);
+            navigator.clipboard.writeText(window.location.origin+"/"+response);
         },
         error: function (xhr, status, error) {
             alert("Ошибка :(");
